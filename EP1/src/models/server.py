@@ -269,7 +269,7 @@ class Server():
         atualizando o status de cada um como Online/Offline.
         """
         peers_list: List[Peer] = list(self.peers.values())
-
+        print("Buscando peers")
         for peer in peers_list:
             ok = self.send_message(peer=peer, message="GET_PEERS")
             print(
@@ -376,7 +376,8 @@ class Server():
         print("\nDigite o número do arquivo para fazer download")
         opt = int(input(">"))
 
-        if opt > 0 and opt < len(groups):
+        if opt > 0 and opt <= len(groups):
+            print("entrou")
             selected_group_files = groups[opt - 1]
             file = selected_group_files[0]
             name, size = file.name, file.size
@@ -394,6 +395,7 @@ class Server():
             }
 
             for i in range(qtd_chunks):
+                print(f"Enviando chunk {i}")
                 peer_address = peer_addresses[i % len(peer_addresses)]
                 self.send_message(
                     peer=self.peers[peer_address],
@@ -413,4 +415,5 @@ class Server():
         self.__discover_files()
         grouped_files = self.__group_files()
         groups = self.__display_files(grouped_files)
+        print(groups)
         self.__handle_download_selection(groups)

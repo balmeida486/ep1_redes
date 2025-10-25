@@ -105,6 +105,7 @@ class Server():
                 # Responde com a lista de peers conhecidos, exceto ele mesmo
                 filtered_peers = list(filter(
                     lambda x: f"{x.host}:{x.port}" != sender, self.peers.values()))
+                print(filtered_peers)
                 if len(filtered_peers) > 0:
                     peers_str = " ".join(
                         f"{p.host}:{p.port}:{p.status}:{p.clock.count}" for p in filtered_peers
@@ -112,6 +113,7 @@ class Server():
                     reply = f"PEER_LIST {len(filtered_peers)} {peers_str}"
                     self.send_message(
                         peer=self.peers[sender], message=reply)
+                    print("Resposta enviada")
 
             elif message.action == "PEER_LIST":
                 self.peers[sender].change_status(
